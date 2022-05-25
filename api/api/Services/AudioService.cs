@@ -36,7 +36,7 @@ namespace api.Services
                 var audioModel = await _audioRepository.GetByURL(videoURL);
                 if (audioModel != null)
                     return new ConvertDTO { Title = audioModel.Title, FileSource = 
-                        Helpers.CreateSourcePath(audioModel.FileName, _httpContextAccessor.HttpContext) };
+                        Helpers.CreateSourcePathAudio(audioModel.FileName, _httpContextAccessor.HttpContext) };
 
                 var youtube = new YoutubeClient();
                 var video = await youtube.Videos.GetAsync(videoURL);
@@ -58,7 +58,7 @@ namespace api.Services
                 });
 
                 return new ConvertDTO { Title = video.Title, FileSource = 
-                    Helpers.CreateSourcePath(fileName, _httpContextAccessor.HttpContext) };
+                    Helpers.CreateSourcePathAudio(fileName, _httpContextAccessor.HttpContext) };
             }
             catch
             {
