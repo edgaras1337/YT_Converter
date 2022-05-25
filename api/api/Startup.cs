@@ -26,6 +26,11 @@ namespace api
     {
         public Startup(IConfiguration configuration)
         {
+            //IConfiguration configuration = new ConfigurationBuilder()
+            //    .SetBasePath(env.ContentRootPath)
+            //    .AddJsonFile("secrets.json")
+            //    .Build();
+
             Configuration = configuration;
         }
 
@@ -47,10 +52,10 @@ namespace api
                 .UseSqlServer(Configuration.GetConnectionString("Azure")));
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IAudioRepository, AudioRepository>();
+            services.AddScoped<TRepository<DownloadedAudio>, AudioRepository>();
             services.AddScoped<IAudioService, AudioService>();
-            services.AddScoped<IVideoRepository, VideoRepository>();
-            services.AddScoped<IVideoService, VideoService>();
+            services.AddScoped<TRepository<DownloadedVideo>, VideoRepository>();
+            services.AddScoped<IAudioService, VideoService>();
 
         }
 

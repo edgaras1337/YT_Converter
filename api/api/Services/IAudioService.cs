@@ -5,9 +5,7 @@ namespace api.Services
 {
     public interface IAudioService
     {
-        //Task<byte[]> SaveMp3Audio(string videoURL);
-
-        Task<ConvertDTO> ConvertAudio(string videoURL);
-        Task<byte[]> GetAudioFile(string fileName);
+        Task<ConvertDTO> ConvertFile(string videoURL);
+        Task<byte[]> GetFile(string fileName);
     }
 }

@@ -9,9 +9,6 @@ namespace api.Controllers
     public class VideoController : ControllerBase
     {
         private readonly IVideoService _videoService;
-        public VideoController(IVideoService videoService)
-        {
-            _videoService = videoService;
-        }
+        public VideoController(IVideoService videoService) => _videoService = videoService;
     }
 }

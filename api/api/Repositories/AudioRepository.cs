@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace api.Repositories
 {
-    public class AudioRepository : IAudioRepository
+    public class AudioRepository : TRepository<DownloadedAudio>
     {
         private readonly ApplicationDbContext _context;
         public AudioRepository(ApplicationDbContext context)
@@ -17,12 +17,6 @@ namespace api.Repositories
         {
             await _context.DownloadedAudios.AddAsync(audio);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task<DownloadedAudio> GetByName(string fileName)
-        {
-            return await _context.DownloadedAudios
-                .SingleOrDefaultAsync(f => f.FileName == fileName);
         }
 
         public async Task<DownloadedAudio> GetByURL(string fileName)
