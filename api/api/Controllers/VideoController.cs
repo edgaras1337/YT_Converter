@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/video")]
     [ApiController]
     public class VideoController : ControllerBase
     {
@@ -27,7 +27,7 @@ namespace api.Controllers
         {
             var bytes = await _videoService.GetFile(fileName);
             if (bytes is null) return NotFound("File not found.");
-            return File(bytes, "audio/mpeg");
+            return File(bytes, "video/mp4");
         }
     }
 }

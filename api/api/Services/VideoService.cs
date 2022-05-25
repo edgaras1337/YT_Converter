@@ -13,7 +13,7 @@ using YoutubeExplode.Videos.Streams;
 
 namespace api.Services
 {
-    public class VideoService : IAudioService
+    public class VideoService : IVideoService
     {
         private readonly TRepository<DownloadedVideo> _videoRepository;
         private readonly IWebHostEnvironment _hostEnvironment;
@@ -54,7 +54,7 @@ namespace api.Services
                 var stream = await youtube.Videos.Streams.GetAsync(streamInfo);
 
                 var fileName = $"{Guid.NewGuid()}{Helpers.MP4}";
-                var videoPath = Path.Combine(_hostEnvironment.WebRootPath, "Audio", fileName);
+                var videoPath = Path.Combine(_hostEnvironment.WebRootPath, "Video", fileName);
                 await youtube.Videos.Streams.DownloadAsync(streamInfo, videoPath);
 
                 await _videoRepository.Add(new DownloadedVideo

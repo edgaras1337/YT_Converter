@@ -17,5 +17,16 @@ namespace api.Controllers
             _audioService = audioService;
             _videoService = videoService;
         }
+
+        [HttpPost("/convert")]
+        public async Task<IActionResult> Convert(UrlDto dto)
+        {
+            var audio = await _audioService.ConvertFile(dto.URL);
+            var video = await _videoService.ConvertFile(dto.URL);
+
+            if (audio is null || video is null) return BadRequest("Invalid URL.");
+
+            //return Ok(response);
+        }
     }
 }

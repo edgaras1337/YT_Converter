@@ -55,7 +55,7 @@ namespace api
             services.AddScoped<TRepository<DownloadedAudio>, AudioRepository>();
             services.AddScoped<IAudioService, AudioService>();
             services.AddScoped<TRepository<DownloadedVideo>, VideoRepository>();
-            services.AddScoped<IAudioService, VideoService>();
+            services.AddScoped<IVideoService, VideoService>();
 
         }
 
