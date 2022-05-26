@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="css/styles.css">
         <script type="text/javascript" src="js/index.js"></script>
         <title>Hello World!</title>
@@ -16,8 +15,6 @@
                         <input id="videoLink" type="text" name="video" autocomplete="off">
                         <input id="submit" type="submit" value="Convert" onclick="validateYouTubeUrl()">
                       </form>
-
-                      <div id="message"></div>
                 </div>
                 
             </div>
