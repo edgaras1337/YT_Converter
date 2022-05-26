@@ -52,11 +52,11 @@ namespace api
                 .UseSqlServer(Configuration.GetConnectionString("Azure")));
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<TRepository<DownloadedAudio>, AudioRepository>();
-            services.AddScoped<IAudioService, AudioService>();
-            services.AddScoped<TRepository<DownloadedVideo>, VideoRepository>();
-            services.AddScoped<IVideoService, VideoService>();
-
+            services.AddScoped<IGenericRepository<DownloadedAudio>, AudioRepository>();
+            services.AddScoped<IGenericRepository<DownloadedVideo>, VideoRepository>();
+            services.AddScoped<IConverterService, ConverterService>();
+            services.AddScoped<ICustomSearchAPI, CustomSearchAPI>();
+            services.AddScoped<IYoutubeAPI, YoutubeAPI>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
