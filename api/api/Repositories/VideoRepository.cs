@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace api.Repositories
 {
-    public class VideoRepository : TRepository<DownloadedVideo>
+    public class VideoRepository : IGenericRepository<DownloadedVideo>
     {
         private readonly ApplicationDbContext _context;
 

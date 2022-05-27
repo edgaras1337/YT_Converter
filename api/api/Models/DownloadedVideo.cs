@@ -8,6 +8,5 @@ namespace api.Models
         public string FileName { get; set; }
         public string URL { get; set; }
         public string MediaType { get; set; }
-        public string Title { get; set; }
     }
 }

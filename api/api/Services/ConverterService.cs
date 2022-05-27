@@ -7,82 +7,102 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using YoutubeExplode;
 using YoutubeExplode.Videos.Streams;
 
 namespace api.Services
 {
-    public class ConverterService
+    public class ConverterService : IConverterService
     {
-        private readonly TRepository<DownloadedAudio> _audioRepository;
-        private readonly TRepository<DownloadedVideo> _videoRepository;
+        private readonly IGenericRepository<DownloadedAudio> _audioRepository;
+        private readonly IGenericRepository<DownloadedVideo> _videoRepository;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICustomSearchAPI _customSearchAPI;
+        private readonly IYoutubeAPI _youtubeAPI;
 
         public ConverterService(
-            TRepository<DownloadedAudio> audioRepository,
-            TRepository<DownloadedVideo> videoRepository,
+            IGenericRepository<DownloadedAudio> audioRepository,
+            IGenericRepository<DownloadedVideo> videoRepository,
             IHttpContextAccessor httpContextAccessor,
-            IWebHostEnvironment hostEnvironment)
+            IWebHostEnvironment hostEnvironment,
+            ICustomSearchAPI customSearchAPI,
+            IYoutubeAPI youtubeAPI)
         {
             _audioRepository = audioRepository;
             _videoRepository = videoRepository;
             _httpContextAccessor = httpContextAccessor;
             _hostEnvironment = hostEnvironment;
+            _customSearchAPI = customSearchAPI;
+            _youtubeAPI = youtubeAPI;
         }
 
-        public async Task<FileDTO> ConvertFile(string videoURL)
+        public async Task<ResponseDTO> ConvertFile(string videoURL)
         {
             try
             {
-                var audioModel = await _audioRepository.GetByURL(videoURL);
-                var videoModel = await _videoRepository.GetByURL(videoURL);
-                if (audioModel != null && videoModel != null)
-                    return new FileDTO {
-                        AudioURL = CreateSourcePath(audioModel.FileName, "Audio"),
-                        VideoURL = CreateSourcePath(videoModel.FileName, "Video")
-                    };
-
                 var youtube = new YoutubeClient();
                 var video = await youtube.Videos.GetAsync(videoURL);
 
+                // Get video details from YoutubeAPI.
+                VideoDetails details = await _youtubeAPI.GetVideoDetailsAsync(video.Id);
+
+                // Get URL of website, which has lyrics of the video.
+                string lyricsPage = _customSearchAPI.GetLyrics(details.Title);
+
+                // Get audio and video URL from the database.
+                // Get data from there, if both are not null.
+                var audioModel = await _audioRepository.GetByURL(videoURL);
+                var videoModel = await _videoRepository.GetByURL(videoURL);
+                if (audioModel != null && videoModel != null)
+                {
+                    return new ResponseDTO
+                    {
+                        AudioURL = CreateSourcePath(audioModel.FileName, "Audio"),
+                        VideoURL = CreateSourcePath(videoModel.FileName, "Video"),
+                        LyricsPageURL = lyricsPage,
+                        Details = details,
+                    };
+                }
+
                 var streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
 
-                // save audio
+                // Download audio file, save it to .../wwwroot/Audio and save details of it in the database.
                 var audioStreamInfo = streamManifest.GetAudioOnlyStreams().GetWithHighestBitrate();
-                var audioFileName = $"{Guid.NewGuid()}{Helpers.MP3}";
+                var audioFileName = $"{Guid.NewGuid()}{MediaTypes.MP3}";
                 var audioPath = Path.Combine(_hostEnvironment.WebRootPath, "Audio", audioFileName);
                 await youtube.Videos.Streams.DownloadAsync(audioStreamInfo, audioPath);
                 await _audioRepository.Add(new DownloadedAudio
                 {
                     FileName = audioFileName,
                     URL = videoURL,
-                    MediaType = Helpers.MP3,
-                    Title = video.Title,
+                    MediaType = MediaTypes.MP3,
                 });
 
-                // save video
+
+                // Download video file, save it to .../wwwroot/Video and save details of it in the database.
                 var videoStreamInfo = streamManifest
-                    .GetVideoOnlyStreams()
+                    .GetMuxedStreams()
                     .Where(s => s.Container == Container.Mp4)
                     .GetWithHighestVideoQuality();
-                //var videoStream = await youtube.Videos.Streams.GetAsync(videoStreamInfo);
-                var videoFileName = $"{Guid.NewGuid()}{Helpers.MP4}";
+                var videoFileName = $"{Guid.NewGuid()}{MediaTypes.MP4}";
                 var videoPath = Path.Combine(_hostEnvironment.WebRootPath, "Video", videoFileName);
                 await youtube.Videos.Streams.DownloadAsync(videoStreamInfo, videoPath);
                 await _videoRepository.Add(new DownloadedVideo
                 {
                     FileName = videoFileName,
                     URL = videoURL,
-                    MediaType = Helpers.MP4,
-                    Title = video.Title,
+                    MediaType = MediaTypes.MP4,
                 });
 
-                return new FileDTO
+                return new ResponseDTO
                 {
                     AudioURL = CreateSourcePath(audioFileName, "Audio"),
-                    VideoURL = CreateSourcePath(videoFileName, "Video")
+                    VideoURL = CreateSourcePath(videoFileName, "Video"),
+                    LyricsPageURL = lyricsPage,
+                    Details = details
                 };
             }
             catch
@@ -91,13 +111,22 @@ namespace api.Services
             }
         }
 
+        public async Task<byte[]> GetFile(string fileName, bool isAudioOnly)
+        {
+            var folder = isAudioOnly ? "Audio" : "Video";
+            var filePath = Path.Combine(_hostEnvironment.WebRootPath, folder, fileName);
 
+            if (!File.Exists(filePath)) return null;
+
+            return await File.ReadAllBytesAsync(filePath);
+
+        }
 
         private string CreateSourcePath(string fileName, string folder) =>
             string.Format("{0}://{1}{2}/api/{3}/download/{4}",
             _httpContextAccessor.HttpContext.Request.Scheme,
             _httpContextAccessor.HttpContext.Request.Host,
             _httpContextAccessor.HttpContext.Request.PathBase, 
-            folder, fileName);
+            folder.ToLower(), fileName);
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace api.Repositories
 {
-    public class AudioRepository : TRepository<DownloadedAudio>
+    public class AudioRepository : IGenericRepository<DownloadedAudio>
     {
         private readonly ApplicationDbContext _context;
         public AudioRepository(ApplicationDbContext context)
