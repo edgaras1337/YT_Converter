@@ -15,32 +15,12 @@
                 <h3>Paste link here!</h3>
                 <div id="converter">
                     <form method="post" onsubmit="return false">
-                        <input id="videoLink" type="text" name="video" autocomplete="off" />
-                        <input id="submit" type="submit" value="Convert" onclick="validateYouTubeUrl()" />
+                        <input id="videoLink" type="text" name="video" placeholder="Enter full link to youtube video" autocomplete="off" />
+                        <input id="submit" type="submit" value="Convert" onclick="createRequest()" />
                     </form>
                     
                     <div id="videoBlock">
                         
-                        <div class="loaderBlock">
-                        <div class="loader"></div>
-                        </div>
-                        Fetching
-                        </div>
-
-                        <div id="videoTitle">A Legacy of Champions</div>
-                        <div id="videoThumbnail">
-                            <img src="https://i.ytimg.com/vi/jHyrFF2x1OM/maxresdefault.jpg" alt="bottalk" class="thumbnail" />
-                        </div>
-                        <div id="videoPublished">2022-05-22</div>
-                        <details>
-                            <summary>
-                                Description
-                            </summary>
-                            <div id="videDescription">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam hendrerit, lectus non ullamcorper blandit, ex justo commodo tellus, vel mollis ante orci id odio. Vestibulum vitae mollis enim. Duis sit amet neque ullamcorper, suscipit arcu nec, vestibulum turpis. Donec ut nibh eu dolor vehicula tincidunt. In at faucibus ligula. Ut maximus magna diam, sed rutrum sapien accumsan rhoncus. Donec a ex risus. Donec eu nisi tincidunt, feugiat magna ac, ultricies sem. Nulla volutpat, ante et convallis tristique, lectus massa ultricies risus, non consequat mauris lectus vel enim. Nam at scelerisque massa, a facilisis risus.</div>
-                        </details>
-                        <div class="dowloadButtons">
-                        <button class="btn"><i class="fa fa-download"></i> Download MP3</button>
-                        <button class="btn"><i class="fa fa-download"></i> Download MP4</button>
                     </div>
                 </div>
             </div>
