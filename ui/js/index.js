@@ -7,7 +7,7 @@ function createRequest() {
 }
 
 function printMessage(message) {
-    document.getElementById('message').innerHTML = message;
+    document.getElementById('videoBlock').innerHTML = message;
     
 }
 

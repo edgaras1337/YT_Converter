@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: Segoe UI Historic, Segoe UI, Helvetica, Arial, sans-serif;
+    font-family: Roboto, Arial, sans-serif;
 }
 .page-wrapper {
     position: relative;
@@ -67,3 +67,55 @@ body {
     cursor: pointer;
     -webkit-appearance: none;
 }
+
+.btn {
+    background-color: #1e90ff;
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  /* Darker background on mouse-over */
+  .btn:hover {
+    background-color: #4169e1;
+  }
+
+  #videoTitle {
+    font-weight: 600;
+    text-align: center;
+    font-size: 22px;
+  }
+
+  #videoThumbnail {
+      text-align: center;
+  }
+
+  #videoThumbnail img {
+    max-width: 500px;
+    max-height: 640px;
+  }
+  
+  #videoPublished {
+    text-align: center;
+    color: #4e4e4e;
+  }
+
+  details {
+    background: #eee;
+    margin-bottom: 2rem;
+    padding: .5rem 1rem;
+  }
+  
+  summary {
+    cursor: pointer;
+  }
+  
+  summary > * {
+    display: inline;
+  }
+
+  .dowloadButtons {
+    text-align: center;
+  }

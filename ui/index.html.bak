@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="css/styles.css">
         <script type="text/javascript" src="js/index.js"></script>
         <title>Hello World!</title>
@@ -15,6 +16,19 @@
                         <input id="videoLink" type="text" name="video" autocomplete="off">
                         <input id="submit" type="submit" value="Convert" onclick="validateYouTubeUrl()">
                       </form>
+
+                      <div id="videoBlock">
+                          <div id="videoTitle">OOO MOYA OBORONA</div>
+                          <div id="videoThumbnail">
+						   <img src="./img/bottalk.png" alt="bottalk" class="bottalkwhite" />
+						  </div>
+                          <div id="videoPublished">2011-11-11</div>
+                          <div id="videDescription">PIZDA</div>
+                          <button class="btn"><i class="fa fa-download"></i> Download MP3</button>
+                          <button class="btn"><i class="fa fa-download"></i> Download MP4</button>
+
+
+                      </div>
                 </div>
                 
             </div>
