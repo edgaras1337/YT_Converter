@@ -68,6 +68,10 @@ body {
     -webkit-appearance: none;
 }
 
+#videoBlock {
+  margin-top: 20px;
+}
+
 .btn {
     background-color: #1e90ff;
     border: none;
@@ -75,6 +79,7 @@ body {
     padding: 12px 30px;
     cursor: pointer;
     font-size: 20px;
+    margin: 0px 20px;
   }
   
   /* Darker background on mouse-over */
