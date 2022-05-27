@@ -15,24 +15,37 @@ function createRequest() {
             })
         }).then(response => response.json()).then(function(data) {
 
+            mp3link = data.audioURL;
+            let videoBlockContent = `
+            <div id="videoTitle">${data.details.title}</div>
+            <div id="videoThumbnail">
+            <img src="${data.details.thumbnailURL}" alt="${data.details.title}" class="thumbnail" />
+            <div id="videoPublished">${data.details.publishDate}</div>`;
+            if(data.lyricsPageURL != null) {
+                videoBlockContent += `<a href=${data.lyricsPageURL}>Lyrics</a>`
+            }  
+            videoBlockContent+=`
+            <details>
+                <summary>
+                    Description
+                </summary>
+                <div id="videDescription">${data.details.description}</div>
+            </details>
+            <div class="downloadButtons">
+            </div>`;
 
-            let videoBlockContent = `<div id="videoTitle">${data.details.title}</div>
-    <div id="videoThumbnail">
-        <img src="${data.details.thumbnailURL}" alt="${data.details.title}" class="thumbnail" />
-    </div>
-    <div id="videoPublished">${data.details.publishDate}</div>
-    <details>
-        <summary>
-            Description
-        </summary>
-        <div id="videDescription">${data.details.description}</div>
-    </details>
-    <div class="downloadButtons">
-    <a href="${data.audioURL}" title="${data.details.title}" class="btn" role="button" download="${data.details.title}.mp3"><i class="fa fa-download"></i>Download MP3</a>
-    <a href="${data.videoURL}" title="${data.details.title}" class="btn" role="button" download="${data.details.title}.mp4"><i class="fa fa-download"></i>Download MP3</a>
+            let downloadAudioBtn = $(`<button class="btn"><i class="fa fa-download"></i>Download MP3</a></button>`).on("click", () => {
+                download(data.audioURL, data.details.title, "mp3");
+            });
+            let downloadVideoBtn = $(`<button class="btn"><i class="fa fa-download"></i>Download MP4</a></button>`).on("click", () => {
+                download(data.videoURL, data.details.title, "mp4");
+            });
 
-    </div>`;
+
             document.getElementById('videoBlock').innerHTML = videoBlockContent;
+
+            $('.downloadButtons').append(downloadAudioBtn);
+            $('.downloadButtons').append(downloadVideoBtn);
         });
     }
 
@@ -42,7 +55,6 @@ function createRequest() {
 
 function printMessage(message) {
     document.getElementById('videoBlock').innerHTML = message;
-
 };
 
 function validateYouTubeUrl() {
@@ -58,3 +70,19 @@ function validateYouTubeUrl() {
         }
     }
 };
+
+function download(link, filename, ext) {
+    console.log(mp3link);
+    axios({
+        url: link,
+        method: 'GET',
+        responseType: 'blob',
+    }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${filename}.${ext}`);
+        document.body.appendChild(link);
+        link.click();
+    });
+}
