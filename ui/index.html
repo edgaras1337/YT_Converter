@@ -10,6 +10,7 @@
 
     <body>
         <div class="page-wrapper">
+           
             <div class="main-block div-center">
                 <h3>Paste link here!</h3>
                 <div id="converter">
@@ -17,8 +18,15 @@
                         <input id="videoLink" type="text" name="video" autocomplete="off" />
                         <input id="submit" type="submit" value="Convert" onclick="validateYouTubeUrl()" />
                     </form>
-
+                    
                     <div id="videoBlock">
+                        
+                        <div class="loaderBlock">
+                        <div class="loader"></div>
+                        </div>
+                        Fetching
+                        </div>
+
                         <div id="videoTitle">A Legacy of Champions</div>
                         <div id="videoThumbnail">
                             <img src="https://i.ytimg.com/vi/jHyrFF2x1OM/maxresdefault.jpg" alt="bottalk" class="thumbnail" />
@@ -33,7 +41,6 @@
                         <div class="dowloadButtons">
                         <button class="btn"><i class="fa fa-download"></i> Download MP3</button>
                         <button class="btn"><i class="fa fa-download"></i> Download MP4</button>
-                        </div>
                     </div>
                 </div>
             </div>
