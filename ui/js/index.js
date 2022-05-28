@@ -6,7 +6,7 @@ function createRequest() {
         </div><span class="text-center">Fetching...</span>`;
         document.getElementById('videoBlock').innerHTML = loader;
 
-        fetch('https://localhost:44397/api/convert?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DMmgDvy7vo7A', {
+        fetch('https://localhost:8001/api/convert?url=' + encodeURI($('#videoLink').val()), {
     method: 'POST',
     headers: {
         'accept': '*/*',
@@ -75,7 +75,6 @@ function validateYouTubeUrl() {
 };
 
 function download(link, filename, ext) {
-    console.log(mp3link);
     axios({
         url: link,
         method: 'GET',
