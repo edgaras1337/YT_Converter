@@ -25,38 +25,26 @@ namespace api.Controllers
         public ConverterController(IConverterService converterService) => _converterService = converterService;
 
         [HttpPost("convert")]
-        //[ResponseCache(Duration = 180, VaryByQueryKeys = new string[] { "url" }, Location = ResponseCacheLocation.Any)]
-        //public async Task<IActionResult> Convert(RequestDTO dto)
-        public async Task<IActionResult> Convert([FromQuery] string url)
+        public async Task<IActionResult> ConvertAsync([FromQuery] string url)
         {
-            var response = await _converterService.ConvertFile(url);
+            var response = await _converterService.ConvertFileAsync(url);
             if (response is null) return BadRequest("Invalid URL.");
             return Ok(response);
         }
 
-        [HttpGet("test")]
-        [ResponseCache(Duration = 30)]
-        public IActionResult Get(RequestDTO dto) 
-        {
-            return Ok(dto); 
-        }
-
         [HttpGet("audio/download/{fileName}")]
         [ResponseCache(Duration = 3600)]
-        public async Task<IActionResult> DownloadAudioAsync([FromRoute] string fileName)
-        {
-            var bytes = await _converterService.GetFile(fileName, true);
-            if (bytes is null) return NotFound("File not found.");
-            return File(bytes, "audio/mpeg");
-        }
+        public async Task<IActionResult> DownloadAudioAsync([FromRoute] string fileName) => await GetFileAsync(fileName, true);
 
         [HttpGet("video/download/{fileName}")]
         [ResponseCache(Duration = 3600)]
-        public async Task<IActionResult> DownloadVideoAsync([FromRoute] string fileName)
+        public async Task<IActionResult> DownloadVideoAsync([FromRoute] string fileName) =>  await GetFileAsync(fileName);
+
+        private async Task<IActionResult> GetFileAsync(string fileName, bool isAudioOnly = false)
         {
-            var bytes = await _converterService.GetFile(fileName, false);
+            var bytes = await _converterService.GetFileAsync(fileName, isAudioOnly);
             if (bytes is null) return NotFound("File not found.");
-            return File(bytes, "video/mp4");
+            return File(bytes, isAudioOnly ? "audio/mpeg" : "video/mp4");
         }
     }
 }

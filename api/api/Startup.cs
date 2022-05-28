@@ -26,11 +26,6 @@ namespace api
     {
         public Startup(IConfiguration configuration)
         {
-            //IConfiguration configuration = new ConfigurationBuilder()
-            //    .SetBasePath(env.ContentRootPath)
-            //    .AddJsonFile("secrets.json")
-            //    .Build();
-
             Configuration = configuration;
         }
 
@@ -43,14 +38,7 @@ namespace api
                 builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
             services.AddResponseCaching();
-            services.AddControllers(options =>
-            {
-                options.CacheProfiles.Add("Default3600", new CacheProfile
-                {
-                    Duration = 3600,
-                    Location = ResponseCacheLocation.Any,
-                });
-            });
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "api", Version = "v1" });

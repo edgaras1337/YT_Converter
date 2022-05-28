@@ -5,7 +5,7 @@ namespace api.Services
 {
     public interface IConverterService
     {
-        Task<ResponseDTO> ConvertFile(string videoURL);
-        Task<byte[]> GetFile(string fileName, bool isAudioOnly);
+        Task<ResponseDTO> ConvertFileAsync(string videoURL);
+        Task<byte[]> GetFileAsync(string fileName, bool isAudioOnly);
     }
 }

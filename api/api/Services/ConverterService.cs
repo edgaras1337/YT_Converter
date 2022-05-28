@@ -39,7 +39,7 @@ namespace api.Services
             _youtubeAPI = youtubeAPI;
         }
 
-        public async Task<ResponseDTO> ConvertFile(string videoURL)
+        public async Task<ResponseDTO> ConvertFileAsync(string videoURL)
         {
             try
             {
@@ -127,7 +127,7 @@ namespace api.Services
             }
         }
 
-        public async Task<byte[]> GetFile(string fileName, bool isAudioOnly)
+        public async Task<byte[]> GetFileAsync(string fileName, bool isAudioOnly)
         {
             var folder = isAudioOnly ? "Audio" : "Video";
             var filePath = Path.Combine(_hostEnvironment.WebRootPath, folder, fileName);
