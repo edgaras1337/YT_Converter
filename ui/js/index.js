@@ -1,21 +1,19 @@
 function createRequest() {
+    $('#linkInput').removeAttr("style")
     if (validateYouTubeUrl()) {
         let loader = `<div class="loaderBlock">
         <div class="loader"></div>
-        </div>Fetching...`;
+        </div><span class="text-center">Fetching...</span>`;
         document.getElementById('videoBlock').innerHTML = loader;
 
-        fetch('https://localhost:44397/api/convert', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'url': $('#videoLink').val()
-            })
-        }).then(response => response.json()).then(function(data) {
+        fetch('https://localhost:44397/api/convert?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DMmgDvy7vo7A', {
+    method: 'POST',
+    headers: {
+        'accept': '*/*',
+        'content-type': 'application/x-www-form-urlencoded'
+    }
+}).then(response => response.json()).then(function(data) {
 
-            mp3link = data.audioURL;
             let videoBlockContent = `
             <div id="videoTitle">${data.details.title}</div>
             <div id="videoThumbnail">
@@ -46,7 +44,12 @@ function createRequest() {
 
             $('.downloadButtons').append(downloadAudioBtn);
             $('.downloadButtons').append(downloadVideoBtn);
-        });
+        }); 
+    } else {
+        $('#linkInput').css('border-color', '#e60c0c');
+        document.getElementById('videoBlock').innerHTML = `<span class="errorMsg">Enter a valid URL</span>`;
+
+
     }
 
 

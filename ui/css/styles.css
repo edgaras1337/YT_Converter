@@ -37,6 +37,14 @@ body {
     border: 1px #5c5ae4 solid;
     border-radius: 3px;
 }
+
+.text-center {
+  margin-left: 47%;
+}
+
+.errorMsg {
+  color: #e60c0c;
+}
 #converter form #videoLink {
     color: #5c5ae4;
     background-color: transparent;
