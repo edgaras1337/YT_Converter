@@ -46,11 +46,27 @@ namespace api.Services
                 var youtube = new YoutubeClient();
                 var video = await youtube.Videos.GetAsync(videoURL);
 
-                // Get video details from YoutubeAPI.
-                VideoDetails details = await _youtubeAPI.GetVideoDetailsAsync(video.Id);
+                VideoDetails details = new();
+                try
+                {
+                    // Get video details from YoutubeAPI.
+                    details = await _youtubeAPI.GetVideoDetailsAsync(video.Id);
+                }
+                catch { }
+                //{
+                //    details.Title = video.Title;
+                //    details.Description = video.Description;
+                //    details.PublishDate = video.Description;
+                //}
 
-                // Get URL of website, which has lyrics of the video.
-                string lyricsPage = _customSearchAPI.GetLyrics(details.Title);
+                string lyricsPage = null;
+                try
+                {
+                    // Get URL of website, which has lyrics of the video.
+                    lyricsPage = _customSearchAPI.GetLyrics(details.Title);
+                }
+                catch { }
+
 
                 // Get audio and video URL from the database.
                 // Get data from there, if both are not null.

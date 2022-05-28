@@ -42,7 +42,15 @@ namespace api
             services.AddCors(options => options.AddDefaultPolicy(
                 builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
-            services.AddControllers();
+            services.AddResponseCaching();
+            services.AddControllers(options =>
+            {
+                options.CacheProfiles.Add("Default3600", new CacheProfile
+                {
+                    Duration = 3600,
+                    Location = ResponseCacheLocation.Any,
+                });
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "api", Version = "v1" });
@@ -74,6 +82,8 @@ namespace api
             app.UseRouting();
 
             app.UseCors();
+
+            app.UseResponseCaching();
 
             app.UseAuthorization();
 

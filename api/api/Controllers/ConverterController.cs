@@ -25,14 +25,24 @@ namespace api.Controllers
         public ConverterController(IConverterService converterService) => _converterService = converterService;
 
         [HttpPost("convert")]
-        public async Task<IActionResult> Convert(RequestDTO dto)
+        //[ResponseCache(Duration = 180, VaryByQueryKeys = new string[] { "url" }, Location = ResponseCacheLocation.Any)]
+        //public async Task<IActionResult> Convert(RequestDTO dto)
+        public async Task<IActionResult> Convert([FromQuery] string url)
         {
-            var response = await _converterService.ConvertFile(dto.URL);
+            var response = await _converterService.ConvertFile(url);
             if (response is null) return BadRequest("Invalid URL.");
             return Ok(response);
         }
 
+        [HttpGet("test")]
+        [ResponseCache(Duration = 30)]
+        public IActionResult Get(RequestDTO dto) 
+        {
+            return Ok(dto); 
+        }
+
         [HttpGet("audio/download/{fileName}")]
+        [ResponseCache(Duration = 3600)]
         public async Task<IActionResult> DownloadAudioAsync([FromRoute] string fileName)
         {
             var bytes = await _converterService.GetFile(fileName, true);
@@ -41,6 +51,7 @@ namespace api.Controllers
         }
 
         [HttpGet("video/download/{fileName}")]
+        [ResponseCache(Duration = 3600)]
         public async Task<IActionResult> DownloadVideoAsync([FromRoute] string fileName)
         {
             var bytes = await _converterService.GetFile(fileName, false);
