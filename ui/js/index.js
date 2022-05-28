@@ -18,7 +18,7 @@ function createRequest() {
             <div id="videoTitle">${data.details.title}</div>
             <div id="videoThumbnail">
             <img src="${data.details.thumbnailURL}" alt="${data.details.title}" class="thumbnail" />
-            <div id="videoPublished">${data.details.publishDate}</div>`;
+            <div id="videoPublished"><i class="fa-solid fa-calendar-plus"></i> ${data.details.publishDate}</div>`;
             if(data.lyricsPageURL != null) {
                 videoBlockContent += `<a href=${data.lyricsPageURL}>Lyrics</a>`
             }  
@@ -32,10 +32,10 @@ function createRequest() {
             <div class="downloadButtons">
             </div>`;
 
-            let downloadAudioBtn = $(`<button class="btn"><i class="fa fa-download"></i>Download MP3</a></button>`).on("click", () => {
+            let downloadAudioBtn = $(`<button class="btn"><i class="fa fa-download"></i> Download MP3</a></button>`).on("click", () => {
                 download(data.audioURL, data.details.title, "mp3");
             });
-            let downloadVideoBtn = $(`<button class="btn"><i class="fa fa-download"></i>Download MP4</a></button>`).on("click", () => {
+            let downloadVideoBtn = $(`<button class="btn"><i class="fa fa-download"></i> Download MP4</a></button>`).on("click", () => {
                 download(data.videoURL, data.details.title, "mp4");
             });
 
