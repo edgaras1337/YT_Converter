@@ -44,7 +44,7 @@ namespace api.Controllers
             }
 
             response = await _converterService.ConvertFileAsync(url);
-            if (response is null) return BadRequest("Invalid URL.");
+            if (response is null) return BadRequest("Invalid URL!");
             return Ok(response);
         }
 
