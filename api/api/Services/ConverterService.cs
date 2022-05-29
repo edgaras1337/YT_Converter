@@ -46,18 +46,13 @@ namespace api.Services
                 var youtube = new YoutubeClient();
                 var video = await youtube.Videos.GetAsync(videoURL);
 
-                VideoDetails details = new();
+                var details = new VideoDetails();
                 try
                 {
                     // Get video details from YoutubeAPI.
                     details = await _youtubeAPI.GetVideoDetailsAsync(video.Id);
                 }
                 catch { }
-                //{
-                //    details.Title = video.Title;
-                //    details.Description = video.Description;
-                //    details.PublishDate = video.Description;
-                //}
 
                 string lyricsPage = null;
                 try

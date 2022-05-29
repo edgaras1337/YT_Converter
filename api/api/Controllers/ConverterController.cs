@@ -6,6 +6,7 @@ using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,23 +22,38 @@ namespace api.Controllers
     public class ConverterController : ControllerBase
     {
         private readonly IConverterService _converterService;
+        private readonly IMemoryCache _memoryCache;
 
-        public ConverterController(IConverterService converterService) => _converterService = converterService;
+        public ConverterController(IConverterService converterService, IMemoryCache memoryCache)
+        {
+            _converterService = converterService;
+            _memoryCache = memoryCache;
+        } 
 
         [HttpPost("convert")]
         public async Task<IActionResult> ConvertAsync([FromQuery] string url)
         {
-            var response = await _converterService.ConvertFileAsync(url);
+            if (!_memoryCache.TryGetValue(url, out ResponseDTO response))
+            {
+                response = await _converterService.ConvertFileAsync(url);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(60));
+
+                if (response != null) _memoryCache.Set(url, response, cacheEntryOptions);
+            }
+
+            response = await _converterService.ConvertFileAsync(url);
             if (response is null) return BadRequest("Invalid URL.");
             return Ok(response);
         }
 
         [HttpGet("audio/download/{fileName}")]
-        [ResponseCache(Duration = 3600)]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> DownloadAudioAsync([FromRoute] string fileName) => await GetFileAsync(fileName, true);
 
         [HttpGet("video/download/{fileName}")]
-        [ResponseCache(Duration = 3600)]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> DownloadVideoAsync([FromRoute] string fileName) =>  await GetFileAsync(fileName);
 
         private async Task<IActionResult> GetFileAsync(string fileName, bool isAudioOnly = false)
