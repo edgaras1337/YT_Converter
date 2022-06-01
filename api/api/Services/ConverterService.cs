@@ -14,6 +14,10 @@ using YoutubeExplode.Videos.Streams;
 
 namespace api.Services
 {
+    /// <summary>
+    /// This class holds the main business logic for converting and 
+    /// retrieving audio/video files from YouTube.
+    /// </summary>
     public class ConverterService : IConverterService
     {
         private readonly IGenericRepository<DownloadedAudio> _audioRepository;
@@ -23,6 +27,17 @@ namespace api.Services
         private readonly ICustomSearchAPI _customSearchAPI;
         private readonly IYoutubeAPI _youtubeAPI;
 
+        /// <summary>
+        /// All needed services are injected using DependencyInjection.
+        /// </summary>
+        /// <param name="audioRepository">AudioRepository instance.</param>
+        /// <param name="videoRepository">VideoRepository instance.</param>
+        /// <param name="httpContextAccessor">HttpContextAccessor instance, which is used for
+        /// accessing the HttpContext.</param>
+        /// <param name="hostEnvironment">WebHostEnvironment instance, which is used to
+        /// access host's environment.</param>
+        /// <param name="customSearchAPI">CustomSearchAPI instance.</param>
+        /// <param name="youtubeAPI">YoutubeAPI instance.</param>
         public ConverterService(
             IGenericRepository<DownloadedAudio> audioRepository,
             IGenericRepository<DownloadedVideo> videoRepository,
@@ -39,6 +54,18 @@ namespace api.Services
             _youtubeAPI = youtubeAPI;
         }
 
+        /// <summary>
+        /// This method convertes the file to both MP3 and MP4 and downloads both of them.
+        /// First of all it checks, if the video information already exists in the database, if so
+        /// it retrieves the video details from there, and the video from WebRoot (wwwroot) folder,
+        /// where the video and audio files are stored in different folders.
+        /// If the video does not exist in the database, it uses YoutubeAPI to retrieve details about the video
+        /// and CustomSearchAPI to find the lyrics in the web, by the video name. Then it uses YoutubeExplode
+        /// package, to do the conversion and store the details in the database and video and audio files
+        /// in WebRoot.
+        /// </summary>
+        /// <param name="videoURL">URL of the video.</param>
+        /// <returns>ResponseDTO on success, or null on failure.</returns>
         public async Task<ResponseDTO> ConvertFileAsync(string videoURL)
         {
             try
@@ -122,6 +149,13 @@ namespace api.Services
             }
         }
 
+        /// <summary>
+        /// This method, retrieves the audio or video (based on the optional boolean parameter)
+        /// from the WebRoot folder and converts it into a byte array.
+        /// </summary>
+        /// <param name="fileName">Name of the file to retrieve.</param>
+        /// <param name="isAudioOnly">Optional parameter, to specify if MP3 or MP4 is requested.</param>
+        /// <returns>Array of file bytes.</returns>
         public async Task<byte[]> GetFileAsync(string fileName, bool isAudioOnly)
         {
             var folder = isAudioOnly ? "Audio" : "Video";
@@ -133,6 +167,14 @@ namespace api.Services
 
         }
 
+        /// <summary>
+        /// This method is used as a helper method, to create a URL for the video/audio
+        /// for client use.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="folder">Folder, in which the file is located: Audio or Video folders
+        /// in the WebRoot folder.</param>
+        /// <returns>URL of the file.</returns>
         private string CreateSourcePath(string fileName, string folder) =>
             string.Format("{0}://{1}{2}/api/{3}/download/{4}",
             _httpContextAccessor.HttpContext.Request.Scheme,

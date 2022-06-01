@@ -66,7 +66,7 @@ namespace tests2.StepDefinitions
             _scenarioContext.Add("AudioDownloadStatus", response.StatusCode);
         }
 
-        [Then(@"Audio is availible to download")]
+        [Then(@"Audio is available to download")]
         public void ThenAudioIsAvailableToDownload()
         {
             _scenarioContext["AudioDownloadStatus"].Should().Be(HttpStatusCode.OK);
@@ -92,7 +92,7 @@ namespace tests2.StepDefinitions
             _scenarioContext.Add("VideoDownloadStatus", response.StatusCode);
         }
 
-        [Then(@"Video is availible to download")]
+        [Then(@"Video is available to download")]
         public void ThenVideoIsAvailableToDownload()
         {
             _scenarioContext["VideoDownloadStatus"].Should().Be(HttpStatusCode.OK);

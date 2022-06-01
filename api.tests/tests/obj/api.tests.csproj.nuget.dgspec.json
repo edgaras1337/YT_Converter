@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ecka7\\Desktop\\xx\\YT_Converter\\api.tests\\tests\\api.tests.csproj": {}
+    "C:\\Users\\ecka7\\Desktop\\proj\\YT_Converter\\api.tests\\tests\\api.tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ecka7\\Desktop\\xx\\YT_Converter\\api.tests\\tests\\api.tests.csproj": {
+    "C:\\Users\\ecka7\\Desktop\\proj\\YT_Converter\\api.tests\\tests\\api.tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ecka7\\Desktop\\xx\\YT_Converter\\api.tests\\tests\\api.tests.csproj",
+        "projectUniqueName": "C:\\Users\\ecka7\\Desktop\\proj\\YT_Converter\\api.tests\\tests\\api.tests.csproj",
         "projectName": "api.tests",
-        "projectPath": "C:\\Users\\ecka7\\Desktop\\xx\\YT_Converter\\api.tests\\tests\\api.tests.csproj",
+        "projectPath": "C:\\Users\\ecka7\\Desktop\\proj\\YT_Converter\\api.tests\\tests\\api.tests.csproj",
         "packagesPath": "C:\\Users\\ecka7\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ecka7\\Desktop\\xx\\YT_Converter\\api.tests\\tests\\obj\\",
+        "outputPath": "C:\\Users\\ecka7\\Desktop\\proj\\YT_Converter\\api.tests\\tests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,5 +1,9 @@
 ﻿namespace api.DTOs
 {
+    /// <summary>
+    /// This class stores more details about the response.
+    /// It is used in ResponseDTO object.
+    /// </summary>
     public class VideoDetails
     {
         public string Title { get; set; }

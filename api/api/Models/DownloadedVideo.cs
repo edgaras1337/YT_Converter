@@ -2,6 +2,9 @@
 
 namespace api.Models
 {
+    /// <summary>
+    /// This class is used as a Model, to work with responses, or the database.
+    /// </summary>
     public class DownloadedVideo
     {
         [Key]
